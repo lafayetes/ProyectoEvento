@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-class CultEvent {
+class CulturalEvent {
 
     private @Id @GeneratedValue Long id;
     private String name;
@@ -16,9 +16,9 @@ class CultEvent {
     private int capacity;
     private String description;
 
-    CultEvent() {}
+    CulturalEvent() {}
 
-    CultEvent(String name, String place,int capacity, String description) {
+    CulturalEvent(String name, String place,int capacity, String description) {
         this.name = name;
         this.place = place;
         this.capacity = capacity;
