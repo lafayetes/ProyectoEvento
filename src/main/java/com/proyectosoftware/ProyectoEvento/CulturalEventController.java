@@ -1,10 +1,13 @@
 package com.proyectosoftware.ProyectoEvento;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +44,13 @@ class CulturalEventController{
     }
 
     @PostMapping("/culturalevents")
-    CulturalEvent newCulturalEvent(@RequestBody CulturalEvent newCulturalEvent) {
-        return repository.save(newCulturalEvent);
+    ResponseEntity<?> newEmployee(@RequestBody CulturalEvent newCulturalEvent) throws URISyntaxException {
+
+        Resource<CulturalEvent> resource = assembler.toResource(repository.save(newCulturalEvent));
+
+        return ResponseEntity
+                .created(new URI(resource.getId().expand().getHref()))
+                .body(resource);
     }
 
     // Single item
@@ -56,24 +64,34 @@ class CulturalEventController{
         return assembler.toResource(culturalEvent);
     }
     @PutMapping("/culturalevents/{id}")
-    CulturalEvent replaceCulturalEvent(@RequestBody CulturalEvent newCulturalEvent, @PathVariable Long id) {
+    ResponseEntity<?> replaceCulturalEvent(@RequestBody CulturalEvent newCulturalEvent, @PathVariable Long id) throws URISyntaxException{
 
-        return repository.findById(id)
+
+        CulturalEvent updatedCulturalEvent = repository.findById(id)
                 .map(CulturalEvent -> {
                     CulturalEvent.setName(newCulturalEvent.getName());
                     CulturalEvent.setPlace(newCulturalEvent.getPlace());
                     CulturalEvent.setCapacity(newCulturalEvent.getCapacity());
                     CulturalEvent.setDescription(newCulturalEvent.getDescription());
+                    CulturalEvent.setDate(newCulturalEvent.getDate());
                     return repository.save(CulturalEvent);
                 })
                 .orElseGet(() -> {
                     newCulturalEvent.setId(id);
                     return repository.save(newCulturalEvent);
                 });
+        Resource<CulturalEvent> resource = assembler.toResource(updatedCulturalEvent);
+
+        return ResponseEntity
+                .created(new URI(resource.getId().expand().getHref()))
+                .body(resource);
     }
 
     @DeleteMapping("/culturalevents/{id}")
-    void deleteCulturalEvent(@PathVariable Long id) {
+    ResponseEntity<?> deleteCulturalEvent(@PathVariable Long id) {
+
         repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -27,10 +27,10 @@ class CulturalEvent {
         this.date = date;
     }
     public String getEvent(){
-        return this.name + "|" +this.date;
+        return this.name + " " +this.date;
     }
     public void setEvent(String event){
-        String[] parts = event.split("|");
+        String[] parts = event.split(" ");
         this.name = parts[0];
         this.date = parts[1];
     }
