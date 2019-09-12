@@ -13,12 +13,12 @@ class CulturalEvent {
     private @Id @GeneratedValue Long id;
     private String name;
     private String place;
-    private int capacity;
+    private String capacity;
     private String description;
 
     CulturalEvent() {}
 
-    CulturalEvent(String name, String place,int capacity, String description) {
+    CulturalEvent(String name, String place,String capacity, String description) {
         this.name = name;
         this.place = place;
         this.capacity = capacity;

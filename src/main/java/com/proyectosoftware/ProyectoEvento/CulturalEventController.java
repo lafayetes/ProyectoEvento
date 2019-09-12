@@ -2,6 +2,7 @@ package com.proyectosoftware.ProyectoEvento;
 
 import java.util.List;
 
+import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.core.DummyInvocationUtils.methodOn;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
 class CulturalEventController{
@@ -34,10 +38,14 @@ class CulturalEventController{
     // Single item
 
     @GetMapping("/culturalevents/{id}")
-    CulturalEvent one(@PathVariable Long id) {
+    Resource<CulturalEvent> one(@PathVariable Long id) {
 
-        return repository.findById(id)
+        CulturalEvent culturalEvent = repository.findById(id)
                 .orElseThrow(() -> new CulturalEventNotFoundException(id));
+
+        return new Resource<>(culturalEvent,
+                linkTo(methodOn(CulturalEventController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(CulturalEventController.class).all()).withRel("culturalevents"));
     }
 
     @PutMapping("/culturalevents/{id}")
