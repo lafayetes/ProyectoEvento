@@ -31,7 +31,7 @@ class CulturalEventController{
     }
 
     // Aggregate root
-
+// Here is the get method using REST to get the all the data
     @GetMapping("/culturalevents")
     Resources<Resource<CulturalEvent>> all() {
 
@@ -42,7 +42,7 @@ class CulturalEventController{
         return new Resources<>(culturalEvent,
                 linkTo(methodOn(CulturalEventController.class).all()).withSelfRel());
     }
-
+//Otherwise here is the post method  to add new events
     @PostMapping("/culturalevents")
     ResponseEntity<?> newEmployee(@RequestBody CulturalEvent newCulturalEvent) throws URISyntaxException {
 
@@ -54,7 +54,7 @@ class CulturalEventController{
     }
 
     // Single item
-
+// This GET method is for get a singular event using the id of the event
     @GetMapping("/culturalevents/{id}")
     Resource<CulturalEvent> one(@PathVariable Long id) {
 
@@ -63,6 +63,7 @@ class CulturalEventController{
 
         return assembler.toResource(culturalEvent);
     }
+// The PUT method is implemented here to edit any event made
     @PutMapping("/culturalevents/{id}")
     ResponseEntity<?> replaceCulturalEvent(@RequestBody CulturalEvent newCulturalEvent, @PathVariable Long id) throws URISyntaxException{
 
@@ -86,7 +87,7 @@ class CulturalEventController{
                 .created(new URI(resource.getId().expand().getHref()))
                 .body(resource);
     }
-
+// Finally here is the Delete method for the events
     @DeleteMapping("/culturalevents/{id}")
     ResponseEntity<?> deleteCulturalEvent(@PathVariable Long id) {
 

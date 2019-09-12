@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
+//This is the advice witch it triggers when the system doesn't found the cultural event requested.
 @ControllerAdvice
 class CulturalEventNotFoundAdvice {
 
